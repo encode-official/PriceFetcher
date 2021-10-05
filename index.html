@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Price Fetcher</title>
+    <style>
+        table {
+          font-family: arial, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        td, th {
+          border: 1px solid #ffffff;
+          text-align: left;
+          padding: 8px;
+        }
+        
+        tr:nth-child(odd) {
+          background-color: #4CAF50;
+        }
+        </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+    let prodId;
+    function fetch(prodId){
+    if (document.getElementById('prodId').value!='1'){
+        document.getElementById('prodId').value++;
+    }
+    var data = document.getElementById('prodId').value;
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST","connect.php",true);
+    xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                 var returnData= this.responseText.split("#");
+                 display(returnData);
+                }
+            }
+    xhr.send("proId="+data);
+    }
+    function display(returnData){
+        document.getElementById("data").innerHTML = "<table>" + "<tr>" + "<th>Product ID</th>" + "<th>" + returnData[0] +  "<tr>" + "<td>Product Name</td>" + "<td>"+returnData[2]+"</td>" + "</tr>" + "<tr>" + "<td>MRP</td>" + "<td>"+returnData[1]+"</td>" + "</tr>" + "<tr>" + "</tr>" + "<tr>" + "</tr>" + "</table>";
+        if (document.getElementById('prodId').value == '1'){
+        document.getElementById('prodId').value++;
+    }
+    }
+    </script>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <h1><center>Somnath Stores</center></h1>
+    <div class="container">
+        <form>
+            <div class="row">
+                <div class="col-25">
+                  <label for="pro_id">Product Id</label>
+                </div>
+                <div class="col-55">
+                  <input type="text" id="prodId" name="prodId" placeholder="Enter Id">
+                </div>
+              </div>
+                <button type="button" class="btn" onclick="fetch(prodId)">Get Price</button>
+        </form>
+    </div>
+    <div id="data">
+
+    </div>
+</body>
+</html>
